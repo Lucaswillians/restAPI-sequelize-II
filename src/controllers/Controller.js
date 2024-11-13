@@ -9,29 +9,29 @@ class Controller {
       return res.status(200).json(registerList)
     }
     catch (error) {
-      throw error
+      return res.status(500).json(error.message);
     }
   }
 
-  // async pegaUmPorId(req, res) {
-  //   const { id } = req.params;
-  //   try {
-  //     const umRegistro = await this.entidadeService.pegaUmRegistroPorId(Number(id));
-  //     return res.status(200).json(umRegistro);
-  //   } catch (erro) {
-  //     // erro
-  //   }
-  // }
+  async getOneById(req, res) {
+    const { id } = req.params;
+    try {
+      const umRegistro = await this.serviceEntity.getOneRegisterById(Number(id));
+      return res.status(200).json(umRegistro);
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
 
-  // async criaNovo(req, res) {
-  //   const dadosParaCriacao = req.body;
-  //   try {
-  //     const novoRegistroCriado = await this.entidadeService.criaRegistro(dadosParaCriacao);
-  //     return res.status(200).json(novoRegistroCriado);
-  //   } catch (erro) {
-  //     // erro
-  //   }
-  // }
+  async post(req, res) {
+    const dadosParaCriacao = req.body;
+    try {
+      const novoRegistroCriado = await this.serviceEntity.createRegister(dadosParaCriacao);
+      return res.status(200).json(novoRegistroCriado);
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
 
   async update (req, res) {
     const { id } = req.params
@@ -43,21 +43,19 @@ class Controller {
       return res.status(200).json({ mensagem: 'Updated with success!' });
     }
     catch (error) {
-      throw error
+      return res.status(500).json(error.message);
     }
   }
 
-  // async exclui(req, res) {
-  //   const { id } = req.params;
-  //   try {
-  //     await this.entidadeService.excluiRegistro(Number(id));
-  //     return res.status(200).json({ mensagem: `id ${id} deletado` });
-
-
-  //   } catch (error) {
-  //     return res.status(500).json(error.message);
-  //   }
-  // }
+  async delete(req, res) {
+    const { id } = req.params;
+    try {
+      await this.serviceEntity.deleteRegister(Number(id));
+      return res.status(200).json({ mensagem: `id ${id} deletado` });
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
 }
 
 module.exports = Controller

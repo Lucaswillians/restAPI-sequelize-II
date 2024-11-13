@@ -10,13 +10,13 @@ class Services {
     return dataSource[this.model].findAll()
   }
 
-  // async pegaUmRegistroPorId(id) {
-  //   return dataSource[this.model].findByPk(id);
-  // }
+  async getOneRegisterById(id) {
+    return dataSource[this.model].findByPk(id)
+  }
 
-  // async criaRegistro(dadosDoRegistro) {
-  //   return dataSource[this.model].create(dadosDoRegistro);
-  // }
+  async createRegister(dadosDoRegistro) {
+    return dataSource[this.model].create(dadosDoRegistro);
+  }
 
   async updatedRegister (updatedData, id) {
     const updatedRegisterList = dataSource[this.model].update(updatedData, {
@@ -27,9 +27,9 @@ class Services {
     return true
   }
 
-  // async excluiRegistro(id) {
-  //   return dataSource[this.model].destroy({ where: { id: id } });
-  // }
+  async deleteRegister(id) {
+    return dataSource[this.model].destroy({ where: { id: id } });
+  }
 }
 
 module.exports = Services
