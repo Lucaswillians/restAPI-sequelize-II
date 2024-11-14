@@ -44,3 +44,90 @@ Essa estrutura modular permite uma clara separação de responsabilidades:
 - **`Controller`** gerencia requisições HTTP de maneira genérica.
 - **`PessoaController`** conecta o controlador HTTP ao serviço específico, permitindo a manipulação da tabela `Pessoas`.
 
+
+## Criação de Modelos e Tabelas
+
+Para gerar um modelo e a respectiva tabela no banco de dados, utilize o comando abaixo:
+
+```bash
+npx sequelize-cli model:generate --name nomeDaTabela --attributes atributo1:tipo,atributo2:tipo
+```
+Realizando isso, ele cria uma tabela no sqlite com o nome tabela, e suas colunas.
+
+## Exemplo: Criando uma Tabela Matricula com um Atributo `status` do Tipo String
+
+Para criar uma tabela chamada `Matricula` com um atributo `status` do tipo string, utilize o comando:
+
+```bash
+npx sequelize-cli model:generate --name Matricula --attributes status:string
+```
+
+## Executar a Migração
+
+Depois de criar e editar o arquivo de migração que foi gerado pelo comando acima, você pode aplicar as migrações para criar a tabela no banco de dados com o seguinte comando:
+
+```
+npx sequelize-cli db:migrate
+```
+
+## Populando o Banco de Dados com Seeds
+
+Para popular o banco de dados com dados iniciais (seeds), utilize o seguinte comando:
+
+```
+npx sequelize-cli seed:generate --name nome-do-arquivo
+```
+
+Isso gerará um arquivo de seed na pasta seeders. Edite esse arquivo para incluir os dados que deseja inserir no banco. Em seguida, execute o comando abaixo para rodar todos os seeds e popular o banco:
+
+```
+npx sequelize-cli db:seed:all
+```
+
+## Relacionamentos com Chave Estrangeira (FK)
+
+Quando uma tabela possui uma chave estrangeira (foreign key), não devemos especificá-la diretamente no comando de criação de modelo. Em vez disso, a configuração deve ser feita manualmente nos arquivos gerados pelo Sequelize nas pastas migrations e models.
+
+## Configuração em migrations
+
+Abra o arquivo de migração gerado para a tabela, crie o atributo nesse arquivo e configure a chave estrangeira da seguinte forma:
+```
+categoria_id: {
+  allowNull: false,
+  type: Sequelize.INTEGER,
+  references: { model: 'categorias', key: 'id' }
+}
+```
+
+No exemplo acima, o campo categoria_id faz referência ao campo id da tabela categorias, utilizando o campo references.
+
+## Configuração em models
+
+No arquivo de modelo correspondente, configure o relacionamento no método associate, utilizando o método de associate do Sequelize:
+
+```
+static associate(models) {
+  Matricula.belongsTo(models.Pessoa, {
+    foreignKey: 'estudante_id',
+  });
+  Matricula.belongsTo(models.Curso, {
+    foreignKey: 'curso_id',
+  });
+}
+```
+
+No exemplo acima dizemos que Matricula pertence a tabela pessoa, com a FK estudante_id
+
+## Métodos de Associação
+O Sequelize oferece vários outros métodos para definir relacionamentos entre os modelos:
+
+- belongsTo: Define uma associação onde o modelo atual pertence a outro modelo.
+- hasMany: Define uma associação onde o modelo atual possui muitos registros de outro modelo.
+- belongsToMany: Define uma associação de muitos-para-muitos entre dois modelos, geralmente por meio de uma tabela de junção.
+  
+
+
+
+
+
+
