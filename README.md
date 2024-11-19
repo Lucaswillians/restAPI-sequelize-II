@@ -230,7 +230,7 @@ Para expressões SQL personalizadas que envolvem funções ou cálculos complexo
 
 
 Como Funciona no Banco de Dados nessa consulta feita pelo ORM
-Consulta SQL Gerada:
+- Consulta SQL Gerada:
 ```
 SELECT curso_id
 FROM matriculas
