@@ -15,7 +15,7 @@ module.exports = {
       descricao: {
         type: Sequelize.STRING
       },
-      date_inicio: {
+      data_inicio: {
         type: Sequelize.DATEONLY
       },
       docente_id: {

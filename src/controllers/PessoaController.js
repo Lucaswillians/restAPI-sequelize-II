@@ -8,11 +8,43 @@ class PessoaController extends Controller {
     super(pessoaServices)
   }
 
- async getRegistration(req,  res) {
-    const { estudanteId } = req.params
+ async getActiveRegistration(req,  res) {
+    const { estudante_id } = req.params
     try {
-      const registrationList = await pessoaServices.getRegistrationByStudent(Number(estudanteId))
+      const registrationList = await pessoaServices.getActiveRegistrationByStudent(Number(estudante_id))
       return res.status(200).json(registrationList)
+    }
+    catch (error) {
+      return res.status(500).json(error.message)
+    }
+  }
+
+ async getAllRegistration(req,  res) {
+    const { estudante_id } = req.params
+    try {
+      const registrationList = await pessoaServices.getAllRegistrationByStudent(Number(estudante_id))
+      return res.status(200).json(registrationList)
+    }
+    catch (error) {
+      return res.status(500).json(error.message)
+    }
+  }
+
+  async getAllPeople (req, res) {
+    try {
+      const listAllPeople = await pessoaServices.getAllPeopleByScope()
+      return res.status(200).json(listAllPeople)
+    }
+    catch (error) {
+      return res.status(500).json(error.message)
+    }
+  }
+
+  async cancelStudentRegister (req, res) {
+    const { estudante_id } = req.params
+    try {
+      await pessoaServices.cancelStudentAndRegister(Number(estudante_id))
+      return res.status(200).json({ message: `Matricula ref. estudante ${estudante_id} canceladas` })
     }
     catch (error) {
       return res.status(500).json(error.message)
